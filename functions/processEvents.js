@@ -7,7 +7,8 @@ module.exports.handler = async (event) => {
             try {
                 const parsedBody = JSON.parse(record.body);
                 console.log("processing vehicle details", record.body);
-                console.log("processing is succesfull", record.messageId);
+                throw new Error('Error while processing');
+                // console.log("processing is succesfull", record.messageId);
             } catch (error) {
                 batchItemFailures.push({
                     itemIdentifier: record.messageId
