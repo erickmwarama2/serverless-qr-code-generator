@@ -6,7 +6,7 @@ let eventBridge = new EventBridge();
 module.exports.handler = async (event) => {
     const body = JSON.parse(event.body);
     // put events to eventbridge
-    let event = {
+    let entry = {
         EventBusName: EVENT_BUS_NAME,
         Detail: JSON.stringify({
             vehicleNo: body.vehicleNo,
@@ -17,7 +17,7 @@ module.exports.handler = async (event) => {
     };
 
     try {
-        let output = await eventBridge.putEvents({Entries: [event]}).promise();
+        let output = await eventBridge.putEvents({Entries: [entry]}).promise();
 
         return {
             statusCode: 200,
