@@ -2,3 +2,37 @@ QrEventBus:
   Type: AWS::Events::EventBus
   Properties:
     Name: QR_EVENT_BUS
+
+QrCodesQueue:
+  Type: AWS::SQS::Queue
+  Properties:
+    QueueName: QR_MESSAGE_QUEUE
+
+QrEventsRule:
+  Type: AWS::Events::Rule
+  Properties:
+    EventBusName: !GetAtt QrEventBus.Arn
+    EventPattern:
+      source:
+        - fuel-app
+      detail-type:
+        - user-signup
+    Targets:
+      - Arn: !GetAtt QrCodesQueue.Arn
+        Id: qr-event-bus-target-sqs-${sls:stage}
+
+QrQueuePolicy:
+  Type: AWS::SQS::QueuePolicy
+  Properties:
+    Queues:
+      - !Ref QrCodesQueue
+    PolicyDocument:
+      Statement:
+        - Action:
+            - "SQS:SendMessage"
+          Effect: "Allow"
+          Resource: !GetAtt QrCodesQueue.Arn
+          Principal:
+            Service: events.amazonaws.com
+
+
