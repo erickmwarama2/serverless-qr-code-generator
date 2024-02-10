@@ -7,6 +7,14 @@ QrCodesQueue:
   Type: AWS::SQS::Queue
   Properties:
     QueueName: QR_MESSAGE_QUEUE
+    RedrivePolicy:
+      deadLetterTargetArn: !GetAtt QrCodesDLQ.Arn
+      maxReceiveCount: 2
+
+QrCodesDLQ:
+  Type: AWS::SQS::Queue
+  Properties:
+    QueueName: QR_MESSAGE_DLQ
 
 QrEventsRule:
   Type: AWS::Events::Rule
