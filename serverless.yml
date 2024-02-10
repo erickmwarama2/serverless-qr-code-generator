@@ -23,6 +23,14 @@ functions:
           path: /generate
           method: post
 
+  processEventsLambda:
+    handler: functions/processEvents.handler
+    events:
+      - sqs:
+          arn: !GetAtt QrCodesQueue.Arn
+          batchSize: 10
+          functionResponseType: "ReportBatchItemFailures"
+
 resources:
   Resources:
     ${file(./resources.yml)}
