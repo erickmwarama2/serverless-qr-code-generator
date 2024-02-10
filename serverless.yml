@@ -10,6 +10,8 @@ provider:
 functions:
   putEventsLambda:
     handler: functions/putEvents.handler
+    environment:
+      eventBusName: !Ref QrEventBus
     events:
       - http:
           path: /generate
