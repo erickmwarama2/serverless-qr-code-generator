@@ -17,7 +17,7 @@ module.exports.handler = async (event) => {
     };
 
     try {
-        let output = await eventBridge.putEvents({Entries: []}).promise();
+        let output = await eventBridge.putEvents({Entries: [event]}).promise();
 
         return {
             statusCode: 200,
